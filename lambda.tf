@@ -39,7 +39,7 @@ module "lambda" {
   }
   lambda_role_source_policy_documents = []
   layers                              = [
-    "${local.arn_prefix}:lambda:::awslayer:AWSLambdaPowertoolsTypeScript:27",
+    "${local.arn_prefix}:lambda:::awslayer:AWSLambdaPowertoolsTypeScript",
   ]
   memory_size                         = 512
   package_type                        = "Zip"
