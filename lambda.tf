@@ -43,7 +43,7 @@ module "lambda" {
   package_type                        = "Zip"
   publish                             = false
   reserved_concurrent_executions      = -1
-  role_name                           = "${module.context.id}-lambda-role"
+  role_name                           = "${module.context.id}-ahp-lambda-role"
   runtime                             = "nodejs18.x"
   s3_bucket                           = null
   s3_key                              = null
