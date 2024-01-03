@@ -38,7 +38,7 @@ module "lambda" {
     }
   }
   lambda_role_source_policy_documents = []
-  layers                              = ["${local.arn_prefix}:lambda:${local.region}:${local.account_id}:layer:AWSLambdaPowertoolsTypeScript:27"]
+  layers                              = ["${local.arn_prefix}:lambda:${local.region}:${local.account_id}:layer:AWSLambdaPowertoolsTypeScript"]
   memory_size                         = 512
   package_type                        = "Zip"
   publish                             = false
