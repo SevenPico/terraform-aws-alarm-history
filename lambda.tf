@@ -44,7 +44,7 @@ module "lambda" {
   publish                             = false
   reserved_concurrent_executions      = -1
   role_name                           = "${module.context.id}-lambda-role"
-  runtime                             = "nodejs20.x"
+  runtime                             = "nodejs18.x"
   s3_bucket                           = null
   s3_key                              = null
   s3_object_version                   = null
