@@ -9,7 +9,10 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
 
   event_pattern = jsonencode({
     "detail" : {
-      "alarmName" : var.alarm_names
+      "alarmName" : var.alarm_names,
+      "state" : {
+        "value" : ["ALARM", "OK"]
+      }
     }
   })
 }
