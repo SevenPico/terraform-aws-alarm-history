@@ -39,7 +39,8 @@ module "lambda" {
   }
   lambda_role_source_policy_documents = []
   layers                              = [
-    "${local.arn_prefix}:lambda:${local.region}:${local.account_id}:layer:AWSLambdaPowertoolsTypeScript:27"
+      // https://github.com/mthenw/awesome-layers?tab=readme-ov-file#aws-official-lambda-layer
+      "arn:aws:lambda:${local.region}:094274105915:layer:AWSLambdaPowertoolsTypeScript:18"
   ]
   memory_size                         = 512
   package_type                        = "Zip"
