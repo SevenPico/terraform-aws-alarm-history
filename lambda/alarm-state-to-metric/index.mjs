@@ -19,6 +19,7 @@ export const handler = async (event) => {
 
   const metricValue = alarmLogEvent.detail.state.value === "ALARM" ? 1 : 0;
   const singleMetric = metrics.singleMetric();
+
   singleMetric.addDimension('Alarm Name', alarmLogEvent.detail.alarmName);
   singleMetric.addMetric('Alarm State', metricUnit, metricValue, metricResolution);
 

@@ -31,30 +31,30 @@ module "lambda" {
   image_uri                           = null
   kms_key_arn                         = ""
   lambda_at_edge                      = false
-  lambda_environment                  = {
+  lambda_environment = {
     variables = {
       METRIC_NAMESPACE : var.metric_namespace
       METRIC_SERVICE_NAME : var.metric_service_name
     }
   }
   lambda_role_source_policy_documents = []
-  layers                              = [
-      // https://github.com/mthenw/awesome-layers?tab=readme-ov-file#aws-official-lambda-layer
-      "arn:aws:lambda:${local.region}:094274105915:layer:AWSLambdaPowertoolsTypeScript:27"
+  layers = [
+    // https://github.com/mthenw/awesome-layers?tab=readme-ov-file#aws-official-lambda-layer
+    "arn:aws:lambda:${local.region}:094274105915:layer:AWSLambdaPowertoolsTypeScript:27"
   ]
-  memory_size                         = 512
-  package_type                        = "Zip"
-  publish                             = false
-  reserved_concurrent_executions      = -1
-  role_name                           = "${module.context.id}-ahp-lambda-role"
-  runtime                             = "nodejs18.x"
-  s3_bucket                           = null
-  s3_key                              = null
-  s3_object_version                   = null
-  sns_subscriptions                   = {}
-  ssm_parameter_names                 = null
-  timeout                             = 300
-  tracing_config_mode                 = null
-  vpc_config                          = null
+  memory_size                    = 512
+  package_type                   = "Zip"
+  publish                        = false
+  reserved_concurrent_executions = -1
+  role_name                      = "${module.context.id}-ahp-lambda-role"
+  runtime                        = "nodejs18.x"
+  s3_bucket                      = null
+  s3_key                         = null
+  s3_object_version              = null
+  sns_subscriptions              = {}
+  ssm_parameter_names            = null
+  timeout                        = 300
+  tracing_config_mode            = null
+  vpc_config                     = null
 }
 
