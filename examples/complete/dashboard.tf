@@ -65,9 +65,9 @@ module "dashboard" {
 
   additional_widgets = [
     {
-      type       = "metric"
-      height     = 6
-      width      = 18
+      type   = "metric"
+      height = 6
+      width  = 18
       properties = {
         metrics = local.metrics_combined
         period  = 300
