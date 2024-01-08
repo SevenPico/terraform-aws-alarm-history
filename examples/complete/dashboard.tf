@@ -49,7 +49,7 @@ locals {
   ])
 }
 
-module "dashboard" {
+module "alarm_history_dashboard" {
   source               = "SevenPico/health/aws"
   version              = "0.1.1"
   context              = module.context.self
