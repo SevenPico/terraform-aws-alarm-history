@@ -5,7 +5,7 @@ locals {
 }
 resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
 
-  for_each   = toset(local.alarm_names)
+  for_each   = local.alarm_names
   alarm_name = each.value
 
   alarm_description   = "Custom alarm on any log"
