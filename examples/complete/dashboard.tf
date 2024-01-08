@@ -51,6 +51,7 @@ locals {
 module "dashboard" {
   source               = "SevenPico/health/aws"
   version              = "0.1.1"
+  context              = module.context.self
   notify_sns_topic_arn = ""
 
   cloudwatch_alarm_groups = [
@@ -64,9 +65,9 @@ module "dashboard" {
 
   additional_widgets = [
     {
-      type   = "metric"
-      height = 6
-      width  = 18
+      type       = "metric"
+      height     = 6
+      width      = 18
       properties = {
         metrics = local.metrics_combined
         period  = 300
