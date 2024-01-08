@@ -1,12 +1,11 @@
 locals {
   keys        = ["foo", "bar", "baz"]
-#  alarm_names = [for element in local.keys : "${module.context.id}-custom-${element}-alarm"]
-  alarm_names = { for key in local.keys : key => "${module.context.id}-custom-${key}-alarm" }
+  alarm_names = [for element in local.keys : "${module.context.id}-custom-${element}-alarm"]
 }
 resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
+  count = length(local.alarm_names)
 
-  for_each   = local.alarm_names
-  alarm_name = each.value
+  alarm_name = local.alarm_names[count.index]
 
   alarm_description   = "Custom alarm on any log"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -17,7 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
   period              = "60" # seconds
   statistic           = "Sum"
   dimensions = {
-    "LogGroupName" = aws_cloudwatch_log_group.log_groups[each.key].name
+    "LogGroupName" = aws_cloudwatch_log_group.log_groups[local.keys[count.index]].name
   }
   actions_enabled                       = false
   alarm_actions                         = []
