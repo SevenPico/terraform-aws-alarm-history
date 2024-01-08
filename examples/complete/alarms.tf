@@ -1,6 +1,7 @@
 locals {
   keys        = ["foo", "bar", "baz"]
-  alarm_names = [for element in local.keys : "${module.context.id}-custom-${element}-alarm"]
+#  alarm_names = [for element in local.keys : "${module.context.id}-custom-${element}-alarm"]
+  alarm_names = { for key in local.keys : key => "${module.context.id}-custom-${key}-alarm" }
 }
 resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
 

@@ -38,11 +38,11 @@ locals {
   ]
 
 
-  /*
-* [m0, m1, m2] + [e0, e1, e2]
-*   => [[m0, e0], [m1, e1], [m2, e2]]
-*   => [ m0, e0,   m1, e1,   m2, e2 ]
-*/
+/**
+ * [m0, m1, m2] + [e0, e1, e2]
+ * => [[m0, e0], [m1, e1], [m2, e2]]
+ * => [ m0, e0,   m1, e1,   m2, e2 ]
+ */
   metrics_combined = flatten([
     for pair in setproduct(local.metrics_data_point, local.metrics_data_fill) : pair
   ])
