@@ -72,5 +72,3 @@ module "alarm_history_dashboard" {
     }
   ]
 }
-
-output "loop_results" {
