@@ -5,7 +5,7 @@ locals {
 
   alarm_names = keys(aws_cloudwatch_metric_alarm.custom_alarms)
   metrics_data_point = [
-    for i, alarm_name in local.alarm_names :
+    for i, alarm_key in local.alarm_names :
     [
       var.metric_namespace,
       local.metric_name,
@@ -14,7 +14,7 @@ locals {
       var.metric_service_name,
 
       "Alarm Name",
-      alarm_name,
+      aws_cloudwatch_metric_alarm.custom_alarms[alarm_key].alarm_name,
 
       {
         id : "m${i}",
@@ -25,11 +25,11 @@ locals {
   ]
 
   metrics_data_fill = [
-    for i, alarm_name in local.alarm_names :
+    for i, alarm_key in local.alarm_names :
     [
       {
         expression : "FILL(m${i}, REPEAT)",
-        label : "FILL: ${alarm_name}"
+        label : "FILL: ${aws_cloudwatch_metric_alarm.custom_alarms[alarm_key].alarm_name}"
         id : "e${i}"
         region : var.region
         period : 10
@@ -39,9 +39,10 @@ locals {
   ]
 
   metrics_combined = [
-    for i in range(length(keys)*2): (i % 2 == 0 ? [metrics_data_point[floor(i/2)]] : [metrics_data_fill[floor(i/2)]])
+    for i in range(length(local.keys) * 2) :
+    (i % 2 == 0 ? [local.metrics_data_point[floor(i / 2)]] : [local.metrics_data_fill[floor(i / 2)]])
   ]
-#  metrics_combined = sort(concat(metrics_data_point, metrics_data_fill))
+  #  metrics_combined = sort(concat(metrics_data_point, metrics_data_fill))
 }
 
 module "alarm_history_dashboard" {
