@@ -65,7 +65,8 @@ module "alarm_history_dashboard" {
       width  = 18
       properties = {
         metrics = local.metrics_combined
-        period  = 300
+        period  = 10
+        stat    = "Maximum"
         region  = local.region
         title   = "Alarm History"
         view    = "timeSeries"
