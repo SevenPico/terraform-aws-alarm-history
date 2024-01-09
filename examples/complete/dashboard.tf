@@ -6,7 +6,7 @@ locals {
   alarm_names = keys(aws_cloudwatch_metric_alarm.custom_alarms)
   metrics_data_point = [
     for i, alarm_key in local.alarm_names :
-    [
+    { value = [
       var.metric_namespace,
       local.metric_name,
 
@@ -21,12 +21,12 @@ locals {
         region : var.region,
         color : local.dark_colors[i]
       }
-    ]
+    ] }
   ]
 
   metrics_data_fill = [
     for i, alarm_key in local.alarm_names :
-    [
+    { value = [
       {
         expression : "FILL(m${i}, REPEAT)",
         label : "FILL: ${aws_cloudwatch_metric_alarm.custom_alarms[alarm_key].alarm_name}"
@@ -35,17 +35,15 @@ locals {
         period : 10
         color : local.light_colors[i]
       }
-    ]
+    ] }
   ]
 
-  #    metrics_combined = concat(local.metrics_data_point, local.metrics_data_fill)
-
+  #  metrics_combined = concat(local.metrics_data_point, local.metrics_data_fill)
   metrics_combined = [
     for i in range(length(local.metrics_data_point) * 2) :
-    (i % 2 == 0 ? local.metrics_data_point[floor(i / 2)] : local.metrics_data_fill[floor(i / 2)])
+    (i % 2 == 0 ? local.metrics_data_point[floor(i / 2)].value : local.metrics_data_fill[floor(i / 2)].value)
   ]
 }
-
 
 module "alarm_history_dashboard" {
   source               = "SevenPico/health/aws"
