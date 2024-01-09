@@ -54,7 +54,7 @@ module "alarm_history_dashboard" {
       alarm_arns = [for alarm in aws_cloudwatch_metric_alarm.custom_alarms : alarm.arn]
       height     = 6
       width      = 6
-      stacked    = false
+      stacked    = true
     }
   ]
 
@@ -69,7 +69,7 @@ module "alarm_history_dashboard" {
         region  = local.region
         title   = "Alarm History"
         view    = "timeSeries"
-        stacked = false,
+        stacked = true,
         legend = {
           position = "right"
         }
