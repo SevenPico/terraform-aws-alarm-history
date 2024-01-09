@@ -67,7 +67,7 @@ module "alarm_history_dashboard" {
       height = 6
       width  = 18
       properties = {
-        metrics = [for m in local.metrics_combined : m["value"]]
+        metrics = local.metrics_combined
         period  = 10
         stat    = "Maximum"
         region  = local.region
