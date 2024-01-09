@@ -3,11 +3,10 @@ locals {
   light_colors = ["#ff7979", "#87CEFA", "#97a397", "#ffa07a", "#f9e886", "#b0fafa", "#d8fba4", "#f8aff4"]
   dark_colors  = ["#db041d", "#0c79e6", "#015101", "#e45f2e", "#dfa104", "#06b3b6", "#62c203", "#c50e97"]
 
-  alarm_keys = keys(aws_cloudwatch_metric_alarm.custom_alarms)
-
-  metrics_combined = [
-    for i in range(length(local.alarm_keys) * 2) :
-    (i % 2 == 0 ? [
+  alarm_names = keys(aws_cloudwatch_metric_alarm.custom_alarms)
+  metrics_data_point = [
+    for i, alarm_key in local.alarm_names :
+    [
       var.metric_namespace,
       local.metric_name,
 
@@ -15,26 +14,33 @@ locals {
       var.metric_service_name,
 
       "Alarm Name",
-      aws_cloudwatch_metric_alarm.custom_alarms[local.alarm_keys[i]].alarm_name,
+      aws_cloudwatch_metric_alarm.custom_alarms[alarm_key].alarm_name,
 
       {
         id : "m${i}",
         region : var.region,
         color : local.dark_colors[i]
       }
-    ] :
+    ]
+  ]
+
+  metrics_data_fill = [
+    for i, alarm_key in local.alarm_names :
     [
       {
         expression : "FILL(m${i}, REPEAT)",
-        label : "FILL: ${aws_cloudwatch_metric_alarm.custom_alarms[local.alarm_keys[i]].alarm_name}"
+        label : "FILL: ${aws_cloudwatch_metric_alarm.custom_alarms[alarm_key].alarm_name}"
         id : "e${i}"
         region : var.region
         period : 10
         color : local.light_colors[i]
       }
-    ])
+    ]
   ]
+
+  metrics_combined = concat(local.metrics_data_point, local.metrics_data_fill)
 }
+
 
 
 module "alarm_history_dashboard" {
@@ -54,9 +60,9 @@ module "alarm_history_dashboard" {
 
   additional_widgets = [
     {
-      type       = "metric"
-      height     = 6
-      width      = 18
+      type   = "metric"
+      height = 6
+      width  = 18
       properties = {
         metrics = local.metrics_combined
         period  = 300
@@ -72,3 +78,4 @@ module "alarm_history_dashboard" {
     }
   ]
 }
+
