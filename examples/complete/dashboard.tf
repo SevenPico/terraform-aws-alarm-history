@@ -42,7 +42,6 @@ locals {
 }
 
 
-
 module "alarm_history_dashboard" {
   source               = "SevenPico/health/aws"
   version              = "0.1.1"
@@ -55,6 +54,7 @@ module "alarm_history_dashboard" {
       alarm_arns = [for alarm in aws_cloudwatch_metric_alarm.custom_alarms : alarm.arn]
       height     = 6
       width      = 6
+      stacked    = false
     }
   ]
 
@@ -69,6 +69,29 @@ module "alarm_history_dashboard" {
         region  = local.region
         title   = "Alarm History"
         view    = "timeSeries"
+        stacked = false,
+        legend = {
+          position = "right"
+        }
+        yAxis = {
+          right = {
+            showUnits = false
+          },
+          left = {
+            showUnits = false,
+            min       = 0,
+            max       = 1
+          }
+        },
+        annotations = {
+          horizontal = [
+            {
+              label = "1 is ALARM, 0 is OK",
+              value = 0.5
+            }
+          ]
+        },
+        liveData = true
       }
       updateOn = {
         refresh   = true
