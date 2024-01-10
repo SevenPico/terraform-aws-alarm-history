@@ -7,11 +7,11 @@ locals {
   metrics_data_point = [
     for i, alarm_key in local.alarm_names :
     [
-      var.metric_namespace,
+      local.metric_config.namespace,
       local.metric_name,
 
       "service",
-      var.metric_service_name,
+      local.metric_config.service_name,
 
       "Alarm Name",
       aws_cloudwatch_metric_alarm.custom_alarms[alarm_key].alarm_name,
