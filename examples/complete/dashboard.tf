@@ -74,7 +74,7 @@ module "alarm_history_dashboard" {
         region  = local.region
         title   = "Alarm History"
         view    = "timeSeries"
-        stacked = true,
+        stacked = false,
         legend  = {
           position = "right"
         }
