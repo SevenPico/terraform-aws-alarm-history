@@ -3,7 +3,7 @@ locals {
 }
 resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
 
-  for_each = toset(local.keys)
+  for_each = module.context.enabled ? toset(local.keys) : []
 
   alarm_name = "${module.context.id}-custom-${each.value}-alarm"
 
@@ -15,7 +15,7 @@ resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
   namespace           = "LogMetrics"
   period              = "60" # seconds
   statistic           = "Sum"
-  dimensions = {
+  dimensions          = {
     "LogGroupName" = aws_cloudwatch_log_group.log_groups[each.value].name
   }
   actions_enabled                       = false
