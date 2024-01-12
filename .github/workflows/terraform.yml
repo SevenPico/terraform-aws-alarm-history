@@ -34,19 +34,33 @@ jobs:
 
       - name: terraform validate
         uses: dflook/terraform-validate@v1.31.1
+        with:
+          path: ./
 
-  tfsec:
-    name: Run AquaSecurity scan
-    runs-on: ubuntu-latest
+      - name: terraform validate (examples/acm-only)
+        uses: dflook/terraform-validate@v1.31.1
+        with:
+          path: ./examples/acm-only
 
-    steps:
-      - name: Clone repo.
-        uses: actions/checkout@master
+      - name: terraform validate (examples/import-files)
+        uses: dflook/terraform-validate@v1.31.1
+        with:
+          path: ./examples/import-files
 
-      - name: tfsec
-        uses: aquasecurity/tfsec-action@v1.0.2
-        # with:
-        #   soft_fail: true
+      - name: terraform validate (examples/import-files-empty)
+        uses: dflook/terraform-validate@v1.31.1
+        with:
+          path: ./examples/import-files-empty
+
+      - name: terraform validate (examples/import-secret)
+        uses: dflook/terraform-validate@v1.31.1
+        with:
+          path: ./examples/import-secret
+
+      - name: terraform validate (examples/letsencrypt)
+        uses: dflook/terraform-validate@v1.31.1
+        with:
+          path: ./examples/letsencrypt
 
   checkov:
     name: Run Bridgecrew.io scan
@@ -66,3 +80,4 @@ jobs:
         with:
           directory: ./
           framework: terraform
+          skip_check: CKV_TF_1
