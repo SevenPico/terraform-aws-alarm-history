@@ -31,14 +31,14 @@ module "lambda" {
   image_uri                           = null
   kms_key_arn                         = ""
   lambda_at_edge                      = false
-  lambda_environment                  = {
+  lambda_environment = {
     variables = {
       METRIC_NAMESPACE : var.metric_namespace
       METRIC_SERVICE_NAME : var.metric_service_name
     }
   }
   lambda_role_source_policy_documents = []
-  layers                              = [
+  layers = [
     // https://github.com/mthenw/awesome-layers?tab=readme-ov-file#aws-official-lambda-layer
     "arn:aws:lambda:${local.region}:094274105915:layer:AWSLambdaPowertoolsTypeScript:27"
   ]

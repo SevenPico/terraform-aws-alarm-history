@@ -15,7 +15,7 @@ resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
   namespace           = "LogMetrics"
   period              = "60" # seconds
   statistic           = "Sum"
-  dimensions          = {
+  dimensions = {
     "LogGroupName" = aws_cloudwatch_log_group.log_groups[each.value].name
   }
   actions_enabled                       = false
