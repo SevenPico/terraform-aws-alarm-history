@@ -1,21 +1,23 @@
 locals {
   keys = ["foo", "bar", "baz"]
 }
-resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
 
-  for_each   = toset(local.keys)
+resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
+  #checkov:skip=CKV_AWS_319: "Ensure that CloudWatch alarm actions are enabled"
+  for_each = module.context.enabled ? toset(local.keys) : []
+
   alarm_name = "${module.context.id}-custom-${each.value}-alarm"
 
   alarm_description   = "Custom alarm on any log"
   comparison_operator = "GreaterThanOrEqualToThreshold"
+  threshold           = "1" # percent
   evaluation_periods  = "1"
   metric_name         = "ErrorCount"
   namespace           = "LogMetrics"
   period              = "60" # seconds
   statistic           = "Sum"
-  threshold           = "1" # percent
   dimensions = {
-    "LogGroupName" = aws_cloudwatch_log_group.log_groups[each.key].name
+    "LogGroupName" = aws_cloudwatch_log_group.log_groups[each.value].name
   }
   actions_enabled                       = false
   alarm_actions                         = []
@@ -25,6 +27,6 @@ resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
   insufficient_data_actions             = []
   ok_actions                            = []
   threshold_metric_id                   = null
-  treat_missing_data                    = null
+  treat_missing_data                    = "ignore"
   unit                                  = null
 }

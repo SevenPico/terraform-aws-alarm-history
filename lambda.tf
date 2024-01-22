@@ -21,8 +21,8 @@ module "lambda" {
   cloudwatch_log_subscription_filters = {}
   description                         = "Lambda function to create/update metric from alarm state"
   event_source_mappings               = {}
-  filename                            = data.archive_file.lambda_zip[0].output_path
-  source_code_hash                    = filebase64sha256(data.archive_file.lambda_zip[0].output_path)
+  filename                            = try(data.archive_file.lambda_zip[0].output_path, "")
+  source_code_hash                    = try(filebase64sha256(data.archive_file.lambda_zip[0].output_path), "")
   file_system_config                  = null
   function_name                       = "AlarmStateToMetric"
   handler                             = "index.handler"
@@ -31,30 +31,30 @@ module "lambda" {
   image_uri                           = null
   kms_key_arn                         = ""
   lambda_at_edge                      = false
-  lambda_environment                  = {
+  lambda_environment = {
     variables = {
       METRIC_NAMESPACE : var.metric_namespace
       METRIC_SERVICE_NAME : var.metric_service_name
     }
   }
   lambda_role_source_policy_documents = []
-  layers                              = [
-      // https://github.com/mthenw/awesome-layers?tab=readme-ov-file#aws-official-lambda-layer
-      "arn:aws:lambda:${local.region}:094274105915:layer:AWSLambdaPowertoolsTypeScript:27"
+  layers = [
+    // https://github.com/mthenw/awesome-layers?tab=readme-ov-file#aws-official-lambda-layer
+    "arn:aws:lambda:${local.region}:094274105915:layer:AWSLambdaPowertoolsTypeScript:27"
   ]
-  memory_size                         = 512
-  package_type                        = "Zip"
-  publish                             = false
-  reserved_concurrent_executions      = -1
-  role_name                           = "${module.context.id}-ahp-lambda-role"
-  runtime                             = "nodejs18.x"
-  s3_bucket                           = null
-  s3_key                              = null
-  s3_object_version                   = null
-  sns_subscriptions                   = {}
-  ssm_parameter_names                 = null
-  timeout                             = 300
-  tracing_config_mode                 = null
-  vpc_config                          = null
+  memory_size                    = 512
+  package_type                   = "Zip"
+  publish                        = false
+  reserved_concurrent_executions = -1
+  role_name                      = "${module.context.id}-ahp-lambda-role"
+  runtime                        = "nodejs18.x"
+  s3_bucket                      = null
+  s3_key                         = null
+  s3_object_version              = null
+  sns_subscriptions              = {}
+  ssm_parameter_names            = null
+  timeout                        = 300
+  tracing_config_mode            = null
+  vpc_config                     = null
 }
 
