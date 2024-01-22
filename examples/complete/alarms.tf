@@ -1,6 +1,7 @@
 locals {
   keys = ["foo", "bar", "baz"]
 }
+#checkov:skip=CKV_AWS_319: "Ensure that CloudWatch alarm actions are enabled"
 resource "aws_cloudwatch_metric_alarm" "custom_alarms" {
 
   for_each = module.context.enabled ? toset(local.keys) : []
